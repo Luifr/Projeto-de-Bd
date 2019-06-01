@@ -1,8 +1,24 @@
 const { Pool } = require('pg');
+const express = require('express')
+var cors = require('cors')
+const app = express()
+
+app.use(cors())
+
+app.get('/', function (req, res) {
+	pool.query("SELECT cpf FROM Funcionarios", (err,data)=>{
+		if(!err){
+			res.send(data);
+		}
+	})
+})
+
+app.listen(3000)
 
 const pool = new Pool({
-	user:,
+	user: 'postgres',
 	host: 'localhost',
-	password:,
-	port:
+	password: 'adminadmin',
+	database: 'projeto_bd',
+	port: 5432
 });

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Noticias - Admin</title>
+</head>
+
+<script>
+	async function getFuncionarios(){
+		let response = await fetch('http://localhost:3000',{
+			method: 'GET',
+			mode: 'cors'
+		});
+		let data = await response.json();
+		console.log(data.rows);
+		let ul = document.getElementById("funcionarioList");
+		for(row of data.rows){
+			let node = document.createElement('li');
+			node.innerText = row.cpf;
+			ul.appendChild(node);
+		}
+	}
+</script>
+
+<body>
+	<button onclick="getFuncionarios()" >Buscar funcionarios</button>
+	<ul id="funcionarioList"></ul>
+</body>
+</html>
