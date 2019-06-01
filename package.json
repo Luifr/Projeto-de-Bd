@@ -1,0 +1,23 @@
+{
+  "name": "projeto-de-bd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luifr/Projeto-de-Bd.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luifr/Projeto-de-Bd/issues"
+  },
+  "homepage": "https://github.com/Luifr/Projeto-de-Bd#readme",
+  "dependencies": {
+    "pg": "^7.11.0"
+  }
+}
