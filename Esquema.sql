@@ -4,7 +4,6 @@ CREATE TABLE FUNCIONARIO (
     TELEFONE VARCHAR(13),
     CARGO VARCHAR(8),
     SALARIO INT,
-
     CONSTRAINT CK_CPF CHECK (CPF ~ '[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}'),
     CONSTRAINT PK_FUNCIONARIO PRIMARY KEY (CPF),
     CONSTRAINT CK_CARGO CHECK ((CARGO) IN ('ESCUTA', 'REDATOR', 'PRODUTOR', 'EDITOR', 'AGENTE'))
@@ -15,7 +14,6 @@ CREATE TABLE AGENTE (
     CPF CHAR(14) NOT NULL,
     TIPO VARCHAR(12),
     SALARIOEXTRA INT,
-
     CONSTRAINT PK_AGENTE PRIMARY KEY (CPF),
     CONSTRAINT FK_AGENTE FOREIGN KEY (CPF) REFERENCES FUNCIONARIO (CPF) ON DELETE CASCADE,
     CONSTRAINT CK_AGENTE CHECK ((TIPO) IN ('APRESENTADOR', 'CAMERAMAN_S', 'CAMERAMAN_C', 'AUXILIAR_S', 'AUXILIAR_C', 'REPORTER', 'MOTORISTA'))
@@ -35,12 +33,15 @@ CREATE TABLE ACONTECIMENTO (
 -- membroequipeescuta ta como NOT NULL no esquema, mas a gente nao quer perder registros se um
 -- funcionario ser demitido né? (to do: tirar not null do modelo conceitual)
 
+-- ===================================
+-- =            FUNÇÕES              =
+-- ===================================
 
 -- Retorna cargo de um funcionário dado o CPF.
 CREATE OR REPLACE FUNCTION GET_CARGO(key CHAR(14))
     RETURNS VARCHAR AS $$
     DECLARE
-            VALOR VARCHAR(14);
+        VALOR VARCHAR(14);
     BEGIN
         SELECT CARGO INTO VALOR FROM FUNCIONARIO WHERE (CPF = key);
         IF VALOR = 'AGENTE' THEN
