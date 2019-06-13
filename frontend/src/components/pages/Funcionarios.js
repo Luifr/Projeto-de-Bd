@@ -21,14 +21,14 @@ export default class Funcionarios extends React.Component{
             <div style={{ padding: '10px', background: '#eee'}}>
                 <p style={{ fontSize: 'medium'}}>Buscar um funcionário</p>
                 <form onSubmit = {this.onSubmit} style={{ display: 'flex' }}>
-                    <input 
+                    <input
                         type="text"
                         name="busca"
                         style={{ flex: '10', padding: '5px' }}
                         placeholder="Buscar..."
                         onChange={this.onChange}
                     />
-                    <select 
+                    <select
                         name="atributo"
                         style={{flex: '2'}}
                         onChange={this.onChange}>
@@ -57,7 +57,7 @@ export default class Funcionarios extends React.Component{
                 <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '1'}}>CPF</span>
             </div>
         </React.Fragment>
-    )        
-    }   
+    )
+    }
 }
 

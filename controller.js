@@ -32,7 +32,7 @@ module.exports.getEmployees = (req,res) => {
 }
 
 module.exports.getEmployeesByCpf = (req,res) => {
-	pool.query(`SELECT * FROM FUNCIONARIO WHERE CPF=${req.params.cpf}`, (err,data)=>{
+	pool.query(`SELECT * FROM FUNCIONARIO WHERE CPF='${req.params.cpf}'`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
 		}
@@ -40,15 +40,16 @@ module.exports.getEmployeesByCpf = (req,res) => {
 }
 
 module.exports.getEmployeesByName = (req,res) => {
-	pool.query(`SELECT * FROM FUNCIONARIO WHERE NOME=${req.params.name}`, (err,data)=>{
+	pool.query(`SELECT * FROM FUNCIONARIO WHERE NOME LIKE '%${req.params.name}%'`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
 		}
+		console.log(err);
 	})
 }
 
 module.exports.getEmployeesByPosition = (req,res) => {
-	pool.query(`SELECT * FROM FUNCIONARIO WHERE CARGO=${req.params.position}`, (err,data)=>{
+	pool.query(`SELECT * FROM FUNCIONARIO WHERE CARGO='${req.params.position}'`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
 		}
@@ -66,7 +67,7 @@ module.exports.getNews = (req,res) => {
 }
 
 module.exports.getNewsByName = (req,res) => {
-	pool.query(`SELECT * FROM NOTICIA WHERE TITULO=${req.params.name}`, (err,data)=>{
+	pool.query(`SELECT * FROM NOTICIA WHERE TITULO='${req.params.name}'`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
 		}
@@ -74,7 +75,15 @@ module.exports.getNewsByName = (req,res) => {
 }
 
 module.exports.getNewsByDate = (req,res) => {
-	pool.query(`SELECT * FROM NOTICIA WHERE DATAACONT=${req.params.date}`, (err,data)=>{
+	pool.query(`SELECT * FROM NOTICIA WHERE DATAACONT='${req.params.date}'`, (err,data)=>{
+		if(!err){
+			res.send(data.rows);
+		}
+	})
+}
+
+module.exports.getNewsByCategory = (req,res) => {
+	pool.query(`SELECT * FROM NOTICIA WHERE CATEGORIA='${req.params.date}'`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
 		}
@@ -92,7 +101,7 @@ module.exports.getEpisodes = (req,res) => {
 }
 
 module.exports.getEpisodesByDate = (req,res) => {
-	pool.query(`SELECT * FROM EPISODIO WHERE DATA=${req.params.date}`, (err,data)=>{
+	pool.query(`SELECT * FROM EPISODIO WHERE DATA='${req.params.date}'`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
 		}

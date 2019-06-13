@@ -7,4 +7,4 @@ app.use(cors())
 const apiRoutes = require('./routes')
 app.use('/',apiRoutes)
 
-app.listen(3000);
+app.listen(8000);

@@ -135,12 +135,12 @@ class App extends React.Component {
 
   buscarFuncionario = (busca, atributo) => {
     console.log(busca, atributo);
-    
+
   }
 
   mostrarTodosFunc = () => {
-    axios.get('localhost:3000/employees/').then(function (response) {
-      this.setState({funcionarios: response.rows});
+    axios.get('http://localhost:8000/employees/').then( (response) => {
+      this.setState({funcionarios: response.data});
     })
   }
 
@@ -194,7 +194,7 @@ class App extends React.Component {
           </div>
         </div>
       </Router>
-    ); 
+    );
   }
 }
 
