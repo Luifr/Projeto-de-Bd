@@ -8,8 +8,9 @@
 </head>
 
 <script>
+
 	async function getFuncionarios(){
-		let response = await fetch('http://localhost:3000',{
+		let response = await fetch('http://localhost:3000/funcionarios',{
 			method: 'GET',
 			mode: 'cors'
 		});
