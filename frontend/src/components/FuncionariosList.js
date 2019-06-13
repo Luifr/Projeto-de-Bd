@@ -6,7 +6,7 @@ class FuncionariosList extends React.Component {
     render(){
         return this.props.funcionarios.map((funcionario) => (
             <React.Fragment key={funcionario.cpf}>
-                <FuncionarioItem funcionario={funcionario} onClick={props.onClick(cpf)}/>
+                <FuncionarioItem funcionario={funcionario} onClick={this.props.onClick}/>
             </React.Fragment>
         )); 
     }

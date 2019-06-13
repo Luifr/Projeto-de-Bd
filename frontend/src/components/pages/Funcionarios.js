@@ -41,7 +41,13 @@ export default class Funcionarios extends React.Component{
                         value="Buscar"
                         className="btn"
                         style={{flex: '1'}}
-
+                    />
+                    <input
+                        type="button"
+                        value="Mostrar todos"
+                        className="btn"
+                        style={{flex: '1', margin: '0px 1px'}}
+                        onClick={this.props.mostrarTodos}
                     />
                 </form>
             </div>

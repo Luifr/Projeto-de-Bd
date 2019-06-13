@@ -16,7 +16,7 @@ export class FuncionarioItem extends Component {
                         flex: '1', 
                         textDecoration: 'underline'
                     }}
-                    onClick={props.onClick(cpf)}>{cpf}</Link>
+                    onClick={this.props.onClick.bind(this, cpf)}>{cpf}</Link>
             </div>
         )
     }
