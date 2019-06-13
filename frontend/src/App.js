@@ -134,18 +134,27 @@ class App extends React.Component {
   }
 
   buscarFuncionario = (busca, atributo) => {
-    console.log(busca, atributo);
-    
+    axios.get('localhost:3000/employees/' + atributo + '/' + busca).then(function (response) {
+      this.setState({funcionarios: response});
+    })
   }
 
   mostrarTodosFunc = () => {
     axios.get('localhost:3000/employees/').then(function (response) {
-      this.setState({funcionarios: response.rows});
+      this.setState({funcionarios: response});
     })
   }
 
   buscarNoticia = (busca, atributo) => {
-    console.log(busca, atributo);
+    axios.get('localhost:3000/news/' + atributo + '/' + busca).then(function (response) {
+      this.setState({noticias: response});
+    })
+  }
+
+  mostrarTodasNot = () => {
+    axios.get('localhost:3000/news/').then(function (response) {
+      this.setState({noticias: response});
+    })
   }
 
   criarRoute = () => {
@@ -180,7 +189,7 @@ class App extends React.Component {
 
             <Route exact path="/noticias" render={props => (
               <React.Fragment>
-                <Noticias buscarNoticia={this.buscarNoticia}/>
+                <Noticias buscarNoticia={this.buscarNoticia} mostrarTodos={this.mostrarTodasNot}/>
                 <NoticiasList noticias={this.state.noticias}/>
               </React.Fragment>
             )}/>

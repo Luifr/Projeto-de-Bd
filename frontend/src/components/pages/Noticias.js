@@ -3,7 +3,7 @@ import React from 'react';
 export default class Noticias extends React.Component{
     state = {
         busca: '',
-        atributo: 'titulo'
+        atributo: 'name'
     }
 
     onChange = (e) => this.setState({
@@ -32,16 +32,22 @@ export default class Noticias extends React.Component{
                         name="atributo"
                         style={{flex: '2'}}
                         onChange={this.onChange}>
-                        <option value="titulo">Título</option>
-                        <option value="data">Data</option>
-                        <option value="categoria">Categoria</option>
+                        <option value="name">Título</option>
+                        <option value="date">Data</option>
+                        <option value="category">Categoria</option>
                     </select>
                     <input
                         type="submit"
                         value="Buscar"
                         className="btn"
                         style={{flex: '1'}}
-
+                    />
+                    <input
+                        type="button"
+                        value="Mostrar todas"
+                        className="btn"
+                        style={{flex: '1', margin: '0px 1px'}}
+                        onClick={this.props.mostrarTodos}
                     />
                 </form>
             </div>
