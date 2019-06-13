@@ -8,6 +8,7 @@ import FuncionarioInfo from './components/info/FuncionarioInfo';
 import Noticias from './components/pages/Noticias';
 import NoticiasList from './components/NoticiasList';
 import uuid from 'uuid';
+import axios from 'axios'
 
 class App extends React.Component {
   state = {
@@ -28,6 +29,7 @@ class App extends React.Component {
         completed: false
       }
     ],
+    funcionarioSelecionado: '',
     funcionarios: [
       {
         cpf: 12345,
@@ -133,6 +135,13 @@ class App extends React.Component {
 
   buscarFuncionario = (busca, atributo) => {
     console.log(busca, atributo);
+    
+  }
+
+  mostrarTodosFunc = () => {
+    axios.get('localhost:3000/employees/').then(function (response) {
+      this.setState({funcionarios: response.rows});
+    })
   }
 
   buscarNoticia = (busca, atributo) => {
@@ -148,7 +157,12 @@ class App extends React.Component {
   }
 
   selecionarFunc = (cpf) => {
-    return this.state.funcionarios.filter(funcionario => funcionario.cpf = cpf);
+    this.setState({ todos: this.state.funcionarios.map((funcionario) => {
+      if(funcionario.cpf === cpf) {
+        this.state.funcionarioSelecionado = funcionario;
+      }
+      return funcionario;
+    }) });
   }
 
   render(){
@@ -159,8 +173,8 @@ class App extends React.Component {
             <Header />
             <Route exact path="/funcionarios" render={props => (
               <React.Fragment>
-                <Funcionarios buscarFuncionario={this.buscarFuncionario}/>
-                <FuncionariosList funcionarios={this.state.funcionarios} onClick={selecionarFunc(cpf)}/>
+                <Funcionarios buscarFuncionario={this.buscarFuncionario} mostrarTodos={this.mostrarTodosFunc}/>
+                <FuncionariosList funcionarios={this.state.funcionarios} onClick={this.selecionarFunc}/>
               </React.Fragment>
             )}/>
 
@@ -173,7 +187,7 @@ class App extends React.Component {
 
             <Route exact path="/funcionarios/info" render={props => (
               <React.Fragment>
-                <FuncionarioInfo funci/>
+                <FuncionarioInfo funcionario={this.state.funcionarioSelecionado}/>
               </React.Fragment>
             )}/>
 
