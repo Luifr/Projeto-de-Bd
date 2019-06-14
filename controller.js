@@ -55,9 +55,16 @@ module.exports.insertEmployee = (req,res) => {
 	let params = req.query;
 	pool.query(`INSERT INTO FUNCIONARIO(CPF, NOME, TELEFONE, CARGO, SALARIO) VALUES ('${params.cpf}', '${params.name}', '${params.telephone}', '${params.position}', ${params.salary});`, (err,data)=>{
 		if(!err){
+			if(params.type && params.extrasalary && params.position.toUpperCase() == "AGENTE"){
+				pool.query(`INSERT INTO AGENTE(CPF, TIPO, SALARIOEXTRA) VALUES ('${params.cpf}', '${params.type}', ${params.extrasalary});`, (err,data)=>{
+					if(!err){
+						res.send(data.rows);
+					} else res.send(err.constraint);
+				})
+			}
 			res.send(data.rows);
 		} else res.send(err.constraint);
-	})
+	});
 }
 
 module.exports.insertAgent = (req,res) => {
