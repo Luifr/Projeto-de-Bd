@@ -11,6 +11,9 @@ import uuid from 'uuid';
 import axios from 'axios'
 
 class App extends React.Component {
+
+  serverAddress = 'http://localhost:8000/';
+
   state = {
     todos: [
       {
@@ -139,13 +142,21 @@ class App extends React.Component {
   }
 
   mostrarTodosFunc = () => {
-    axios.get('http://localhost:8000/employees/').then( (response) => {
+    axios.get(this.serverAddress + 'employees/').then( (response) => {
       this.setState({funcionarios: response.data});
     })
   }
 
   buscarNoticia = (busca, atributo) => {
-    console.log(busca, atributo);
+    axios.get(this.serverAddress + 'news/' + atributo + '/' + busca).then( (response) => {
+      this.setState({noticias: response});
+    })
+  }
+
+  mostrarTodasNot = () => {
+    axios.get(this.serverAddress + 'news/').then( (response) => {
+      this.setState({noticias: response});
+    })
   }
 
   criarRoute = () => {
@@ -180,7 +191,7 @@ class App extends React.Component {
 
             <Route exact path="/noticias" render={props => (
               <React.Fragment>
-                <Noticias buscarNoticia={this.buscarNoticia}/>
+                <Noticias buscarNoticia={this.buscarNoticia} mostrarTodos={this.mostrarTodasNot}/>
                 <NoticiasList noticias={this.state.noticias}/>
               </React.Fragment>
             )}/>
