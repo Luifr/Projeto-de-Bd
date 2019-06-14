@@ -41,14 +41,6 @@ export class InserirFuncionario extends Component {
                         placeholder="Nome"
                         onChange={this.onChange}
                     />
-                    <br/>
-                    <input
-                        type="number"
-                        name="telefone"
-                        style={{ flex: '10', padding: '5px', margin:'' }}
-                        placeholder="Telefone (xxxx-xxxx ou xxxxx-xxxx)"
-                        onChange={this.onChange}
-                    />
                     <input
                         type="text"
                         name="cargo"
@@ -78,6 +70,13 @@ export class InserirFuncionario extends Component {
                         onChange={this.onChange}
                     />
                     <input
+                        type="number"
+                        name="telefone"
+                        style={{ flex: '10', padding: '5px', margin:'' }}
+                        placeholder="Telefone (xxxx-xxxx ou xxxxx-xxxx)"
+                        onChange={this.onChange}
+                    />
+                    <input
                         type="submit"
                         value="Adicionar"
                         className="btn"
@@ -91,7 +90,7 @@ export class InserirFuncionario extends Component {
 
 const formStyle = {
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gridGap: '20px'
 }
 

@@ -42,13 +42,6 @@ export class InserirNoticia extends Component {
                         onChange={this.onChange}
                     />
                     <input
-                        type="text"
-                        name="descricao"
-                        style={{ padding: '5px', margin:'' }}
-                        placeholder="Descrição"
-                        onChange={this.onChange}
-                    /><br/>
-                    <input
                         type="number"
                         name="redator"
                         style={{ padding: '5px', margin:'' }}
@@ -61,7 +54,7 @@ export class InserirNoticia extends Component {
                         style={{ padding: '5px', margin:'' }}
                         placeholder="Produtor (CPF)"
                         onChange={this.onChange}
-                    /><br/>
+                    />
                     <input
                         type="text"
                         name="nomeAcont"
@@ -74,6 +67,13 @@ export class InserirNoticia extends Component {
                         name="dataAcont"
                         style={{ padding: '5px', margin:'' }}
                         placeholder="Data do Acontecimento (DD/MM/YYYY)"
+                        onChange={this.onChange}
+                    />
+                    <input
+                        type="text"
+                        name="descricao"
+                        style={{ padding: '5px', margin:'' }}
+                        placeholder="Descrição"
                         onChange={this.onChange}
                     />
                     <input
@@ -90,7 +90,7 @@ export class InserirNoticia extends Component {
 
 const formStyle = {
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gridGap: '20px'
 }
 
