@@ -3,7 +3,7 @@ import React from 'react';
 export default class Funcionarios extends React.Component{
     state = {
         busca: '',
-        atributo: 'nome'
+        atributo: 'name'
     }
 
     onChange = (e) => this.setState({
@@ -32,9 +32,9 @@ export default class Funcionarios extends React.Component{
                         name="atributo"
                         style={{flex: '2'}}
                         onChange={this.onChange}>
-                        <option value="nome">Nome</option>
+                        <option value="name">Nome</option>
                         <option value="cpf">CPF</option>
-                        <option value="cargo">Cargo</option>
+                        <option value="position">Cargo</option>
                     </select>
                     <input
                         type="submit"
@@ -52,10 +52,9 @@ export default class Funcionarios extends React.Component{
                 </form>
             </div>
             <div style={{ fontSize: 'small', margin: '2px 0px', display: 'flex'}}>
-                <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '3'}}>Nome</span>
-                <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '1'}}>Cargo</span>
                 <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '1'}}>CPF</span>
-            </div>
+                <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '3'}}>Nome</span>
+                <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '1'}}>Cargo</span>            </div>
         </React.Fragment>
     )
     }
