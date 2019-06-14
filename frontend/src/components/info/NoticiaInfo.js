@@ -20,7 +20,7 @@ export class NoticiaInfo extends Component {
                     </p>
                     <p>
                         <span style={{fontWeight: 'bold'}}>Acontecimento: </span>
-                        <span>{this.props.noticia.nomeAcont + " (" + this.props.noticia.dataAcont + ")"}</span>
+                        <span>{this.props.noticia.nomeacont + " (" + this.props.noticia.dataacont + ")"}</span>
                     </p>
                     <p>
                         <span style={{fontWeight: 'bold'}}>Funcionários responsáveis: </span>

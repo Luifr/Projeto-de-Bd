@@ -1,5 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom';
 import Header from './components/layout/Header';
 import './App.css';
 import Funcionarios from './components/pages/Funcionarios';
@@ -19,8 +22,7 @@ class App extends React.Component {
   serverAddress = 'http://localhost:8000/';
 
   state = {
-    todos: [
-      {
+    todos: [{
         id: uuid.v4(),
         title: 'aaa',
         completed: false
@@ -38,8 +40,7 @@ class App extends React.Component {
     ],
     funcionarioSelecionado: '',
     noticiaSelecionada: '',
-    funcionarios: [
-      {
+    funcionarios: [{
         cpf: 12345,
         nome: 'Joao Vitor Ponte',
         telefone: '99999-9991',
@@ -75,8 +76,7 @@ class App extends React.Component {
         salario: 9300
       }
     ],
-    noticias: [
-      {
+    noticias: [{
         titulo: 'Acidente na avenida',
         data: '10/06/2019',
         categoria: 'Cidade',
@@ -120,16 +120,20 @@ class App extends React.Component {
   }
 
   markComplete = (id) => {
-    this.setState({ todos: this.state.todos.map((todo) => {
-      if(todo.id === id) {
-        todo.completed = !todo.completed;
-      }
-      return todo;
-    }) });
+    this.setState({
+      todos: this.state.todos.map((todo) => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+      })
+    });
   }
 
   delTodo = (id) => {
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)]});
+    this.setState({
+      todos: [...this.state.todos.filter(todo => todo.id !== id)]
+    });
   }
 
   addTodo = (title) => {
@@ -138,163 +142,260 @@ class App extends React.Component {
       title: title,
       completed: false
     }
-    this.setState({ todos: [...this.state.todos, newTodo]})
+    this.setState({
+      todos: [...this.state.todos, newTodo]
+    })
   }
 
   buscarFuncionario = (busca, atributo) => {
     let params;
-    if (atributo === 'name'){
+    if (atributo === 'name') {
       params = {
         name: busca
       }
     }
-    if (atributo === 'cpf'){
+    if (atributo === 'cpf') {
       params = {
         cpf: busca
       }
     }
-    if (atributo === 'position'){
+    if (atributo === 'position') {
       params = {
         position: busca
       }
     }
-    axios.get(this.serverAddress + 'employees/', params)
-      .then( (response) => {
-      this.setState({funcionarios: response.data});
-    })
+    axios.get(this.serverAddress + 'employees/', {
+        params
+      })
+      .then((response) => {
+        this.setState({
+          funcionarios: response.data
+        });
+      })
   }
 
   mostrarTodosFunc = () => {
-    axios.get(this.serverAddress + 'employees/').then( (response) => {
-      this.setState({funcionarios: response.data});
+    axios.get(this.serverAddress + 'employees/').then((response) => {
+      this.setState({
+        funcionarios: response.data
+      });
     })
   }
 
   buscarNoticia = (busca, atributo) => {
+    console.log("buscar Noticia");
     let params;
-    if (atributo === 'name'){
+    if (atributo === 'name') {
       params = {
         name: busca
       }
     }
-    if (atributo === 'data'){
+    if (atributo === 'data') {
       params = {
         data: busca
       }
     }
-    if (atributo === 'category'){
+    if (atributo === 'category') {
       params = {
         category: busca
       }
     }
-    axios.get(this.serverAddress + 'news/', params)
-      .then( (response) => {
-      this.setState({funcionarios: response.data});
-    })
+    axios.get(this.serverAddress + 'news/', {
+        params
+      })
+      .then((response) => {
+        this.setState({
+          noticias: response.data
+        });
+      })
   }
 
   mostrarTodasNot = () => {
-    axios.get(this.serverAddress + 'news/').then( (response) => {
-      this.setState({noticias: response.data});
+    axios.get(this.serverAddress + 'news/').then((response) => {
+      this.setState({
+        noticias: response.data
+      });
     })
   }
 
   selecionarFunc = (cpf) => {
-    this.setState({ todos: this.state.funcionarios.map((funcionario) => {
-      if(funcionario.cpf === cpf) {
-        this.state.funcionarioSelecionado = funcionario;
-      }
-      return funcionario;
-    }) });
+    this.setState({
+      todos: this.state.funcionarios.map((funcionario) => {
+        if (funcionario.cpf === cpf) {
+          this.state.funcionarioSelecionado = funcionario;
+        }
+        return funcionario;
+      })
+    });
   }
 
   selecionarNot = (titulo, data) => {
-    this.setState({ todos: this.state.noticias.map((noticia) => {
-      if(noticia.titulo === titulo && noticia.data === data) {
-        this.state.noticiaSelecionada = noticia;
-      }
-      return noticia;
-    }) });
+    this.setState({
+      todos: this.state.noticias.map((noticia) => {
+        if (noticia.titulo === titulo && noticia.data === data) {
+          this.state.noticiaSelecionada = noticia;
+        }
+        return noticia;
+      })
+    });
   }
 
   inserirFuncionario = (funcionario) => {
-    axios.post(this.serverAddress + 'employees/', 
-      {
-        cpf: funcionario.cpf,
-        nome: funcionario.nome,
-        telefone: funcionario.telefone,
-        cargo: funcionario.cargo,
-        salario: funcionario.salario
-      }).then( (response) => {
+    console.log(funcionario);
+    axios.post(this.serverAddress + 'employees/', {
+      cpf: funcionario.cpf,
+      name: funcionario.nome,
+      telephone: funcionario.telefone,
+      position: funcionario.cargo,
+      salary: funcionario.salario
+    }).then((response) => {
       console.log(response);
     })
   }
 
   inserirNoticia = (noticia) => {
-    axios.post(this.serverAddress + 'news/', 
-      {
-        titulo: noticia.titulo,
-        data: noticia.data,
-        categoria: noticia.categoria,
-        descricao: noticia.descricao,
-        nomeAcont: noticia.nomeAcont,
-        dataAcont: noticia.dataAcont,
-        redator: noticia.redator,
-        produtor: noticia.produtor
-      }).then( (response) => {
+    axios.post(this.serverAddress + 'news/', {
+      titulo: noticia.titulo,
+      data: noticia.data,
+      categoria: noticia.categoria,
+      descricao: noticia.descricao,
+      nomeAcont: noticia.nomeAcont,
+      dataAcont: noticia.dataAcont,
+      redator: noticia.redator,
+      produtor: noticia.produtor
+    }).then((response) => {
       console.log(response);
     })
   }
 
-  
 
-  render(){
-     return (
-      <Router>
-        <div className="App">
-          <div className="container">
-            <Header />
-            <Route exact path="/funcionarios" render={props => (
-              <React.Fragment>
-                <Funcionarios buscarFuncionario={this.buscarFuncionario} mostrarTodos={this.mostrarTodosFunc}/>
-                <FuncionariosList funcionarios={this.state.funcionarios} onClick={this.selecionarFunc}/>
-              </React.Fragment>
-            )}/>
 
-            <Route exact path="/noticias" render={props => (
-              <React.Fragment>
-                <Noticias buscarNoticia={this.buscarNoticia} mostrarTodos={this.mostrarTodasNot}/>
-                <NoticiasList noticias={this.state.noticias} onClick={this.selecionarNot}/>
-              </React.Fragment>
-            )}/>
+  render() {
+    return ( <
+      Router >
+      <
+      div className = "App" >
+      <
+      div className = "container" >
+      <
+      Header / >
+      <
+      Route exact path = "/funcionarios"
+      render = {
+        props => ( <
+          React.Fragment >
+          <
+          Funcionarios buscarFuncionario = {
+            this.buscarFuncionario
+          }
+          mostrarTodos = {
+            this.mostrarTodosFunc
+          }
+          /> <
+          FuncionariosList funcionarios = {
+            this.state.funcionarios
+          }
+          onClick = {
+            this.selecionarFunc
+          }
+          /> < /
+          React.Fragment >
+        )
+      }
+      />
 
-            <Route exact path="/funcionarios/info" render={props => (
-              <React.Fragment>
-                <FuncionarioInfo funcionario={this.state.funcionarioSelecionado}/>
-              </React.Fragment>
-            )}/>
+      <
+      Route exact path = "/noticias"
+      render = {
+        props => ( <
+          React.Fragment >
+          <
+          Noticias buscarNoticia = {
+            this.buscarNoticia
+          }
+          mostrarTodos = {
+            this.mostrarTodasNot
+          }
+          /> <
+          NoticiasList noticias = {
+            this.state.noticias
+          }
+          onClick = {
+            this.selecionarNot
+          }
+          /> < /
+          React.Fragment >
+        )
+      }
+      />
 
-            <Route exact path="/noticias/info" render={props => (
-              <React.Fragment>
-                <NoticiaInfo noticia={this.state.noticiaSelecionada}/>
-              </React.Fragment>
-            )}/>
+      <
+      Route exact path = "/funcionarios/info"
+      render = {
+        props => ( <
+          React.Fragment >
+          <
+          FuncionarioInfo funcionario = {
+            this.state.funcionarioSelecionado
+          }
+          /> < /
+          React.Fragment >
+        )
+      }
+      />
 
-            <Route path="/inserir" render={props => (
-              <Inserir/>
-            )}/>
+      <
+      Route exact path = "/noticias/info"
+      render = {
+        props => ( <
+          React.Fragment >
+          <
+          NoticiaInfo noticia = {
+            this.state.noticiaSelecionada
+          }
+          /> < /
+          React.Fragment >
+        )
+      }
+      />
 
-            <Route path="/inserir/funcionario" render={props => (
-              <InserirFuncionario onSubmit={this.inserirFuncionario}/>
-            )}/>
+      <
+      Route path = "/inserir"
+      render = {
+        props => ( <
+          Inserir / >
+        )
+      }
+      />
 
-            <Route path="/inserir/noticia" render={props => (
-              <InserirNoticia onSubmit={this.inserirNoticia}/>
-            )}/>
+      <
+      Route path = "/inserir/funcionario"
+      render = {
+        props => ( <
+          InserirFuncionario onSubmit = {
+            this.inserirFuncionario
+          }
+          />
+        )
+      }
+      />
 
-          </div>
-        </div>
-      </Router>
+      <
+      Route path = "/inserir/noticia"
+      render = {
+        props => ( <
+          InserirNoticia onSubmit = {
+            this.inserirNoticia
+          }
+          />
+        )
+      }
+      />
+
+      <
+      /div> < /
+      div > <
+      /Router>
     );
   }
 }

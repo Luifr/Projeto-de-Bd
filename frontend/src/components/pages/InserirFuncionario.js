@@ -21,7 +21,7 @@ export class InserirFuncionario extends Component {
         e.preventDefault();
         this.props.onSubmit(this.state);
     }
-    
+
     render() {
         return (
             <div style={{ margin:'8px' }}>
@@ -70,7 +70,7 @@ export class InserirFuncionario extends Component {
                         onChange={this.onChange}
                     />
                     <input
-                        type="number"
+                        type="text"
                         name="telefone"
                         style={{ flex: '10', padding: '5px', margin:'' }}
                         placeholder="Telefone (xxxx-xxxx ou xxxxx-xxxx)"

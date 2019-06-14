@@ -28,7 +28,7 @@ module.exports.getEmployees = (req,res) => {
 	let queryText;
 
 	if(Object.entries(params).length == 0){
-		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO;`;
+		queryText = `SELECT * FROM FUNCIONARIO;`;
 	}
 	else if(params.name){
 		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE NOME ILIKE '%${params.name}%' ORDER BY NOME;`;
@@ -52,7 +52,7 @@ module.exports.getEmployees = (req,res) => {
 }
 
 module.exports.insertEmployee = (req,res) => {
-	let params = req.query;
+	let params = req.body;
 	pool.query(`INSERT INTO FUNCIONARIO(CPF, NOME, TELEFONE, CARGO, SALARIO) VALUES ('${params.cpf}', '${params.name}', '${params.telephone}', '${params.position}', ${params.salary});`, (err,data)=>{
 		if(!err){
 			if(params.type && params.extrasalary && params.position.toUpperCase() == "AGENTE"){
@@ -68,7 +68,7 @@ module.exports.insertEmployee = (req,res) => {
 }
 
 module.exports.insertAgent = (req,res) => {
-	let params = req.query;
+	let params = req.body;
 	pool.query(`INSERT INTO AGENTE(CPF, TIPO, SALARIOEXTRA) VALUES ('${params.cpf}', '${params.type}', ${params.extrasalary});`, (err,data)=>{
 		if(!err){
 			res.send(data.rows);
@@ -112,7 +112,7 @@ module.exports.getNews = (req,res) => {
 		queryText = `SELECT * FROM NOTICIA WHERE DATAACONT='${params.eventdate}';`;
 	}
 	else if(params.category){
-		queryText = `SELECT * FROM NOTICIA WHERE CATEGORIA='${params.category}'`;
+		queryText = `SELECT * FROM NOTICIA WHERE CATEGORIA=UPPER('${params.category}')`;
 	}
 	else if(params.data1 && params.data2){
 		queryText = `SELECT TITULO, DATA, CATEGORIA, DESCRICAO
@@ -250,6 +250,19 @@ module.exports.getAdsByCPNJ = (req,res) => {
 		} else res.send(err.constraint);
 	})
 }
+
+
+
+module.exports.insertNews = (req,res) => {
+	let params = req.body;
+	pool.query(`INSERT INTO NOTICIA(TITULO, DATA, CATEGORIA, DESCRICAO, NOMEACONT, DATAACONT, REDATOR, PRODUTOR) VALUES ('${params.title}', TO_DATE('${params.date}', 'DD/MM/YYYY'), '${params.category}', '${params.description}', '${params.name_ocurrence}', TO_DATE('${params.date_ocurrence}', 'DD/MM/YYYY'), '${params.redator}','${params.editor}');`, (err,data)=>{
+	 if(!err){
+	  res.send(data.rows);
+	 } else res.send(err.constraint);
+	})
+}
+
+
 
 // Retorna todas as propagandas de dado CPNJ e, se foram ao ar, retorna a média dos pontos de
 // IBOPE contabilizados durante a exibição do anúncio.
