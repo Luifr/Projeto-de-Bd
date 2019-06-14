@@ -31,13 +31,17 @@ module.exports.getEmployees = (req,res) => {
 		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO;`;
 	}
 	else if(params.name){
-		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE NOME LIKE '%${params.name}%' ORDER BY NOME;`;
+		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE NOME ILIKE '%${params.name}%' ORDER BY NOME;`;
 	}
 	else if(params.cpf){
-		queryText = `SELECT * FROM FUNCIONARIO F LEFT JOIN AGENTE A ON F.CPF = A.CPF WHERE F.CPF='${params.cpf}';`;
+		queryText = `SELECT F.CPF, F.NOME, F.CARGO FROM FUNCIONARIO F LEFT JOIN AGENTE A ON F.CPF = A.CPF WHERE F.CPF='${params.cpf}';`;
 	}
 	else if(params.position){
-		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE CARGO LIKE '%${params.position}%' ORDER BY CARGO;`;
+		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE CARGO ILIKE '%${params.position}%' ORDER BY CARGO;`;
+	}
+	else{
+		res.status(400).send({message: "Error"})
+		return;
 	}
 
 	pool.query(queryText, (err,data)=>{
@@ -94,8 +98,8 @@ module.exports.getNews = (req,res) => {
         			A.MEMBROEQUIPEESCUTA = '${params.cpf}'
     			ORDER BY N.DATA;`;
 	}
-	else if(params.title){
-		queryText = `SELECT * FROM NOTICIA WHERE TITULO LIKE '%${params.title}%';`;
+	else if(params.name){
+		queryText = `SELECT * FROM NOTICIA WHERE TITULO ILIKE '%${params.name}%';`;
 	}
 	else if(params.eventdate){
 		queryText = `SELECT * FROM NOTICIA WHERE DATAACONT='${params.eventdate}';`;
@@ -109,10 +113,18 @@ module.exports.getNews = (req,res) => {
 	WHERE TO_DATE('${params.data1}', 'DD/MM/YYYY') < DATA AND DATA < TO_DATE('${params.data2}', 'DD/MM/YYYY')
 	ORDER BY DATA;`;
 	}
+	else{
+		res.status(400).send({message: "Error"})
+	}
 
 	pool.query(queryText, (err,data)=>{
 		if(!err){
+			data.rows = data.rows.map( (val) => {
+				val.data = new Date(val.data).toLocaleDateString();
+				return val;
+			});
 			res.send(data.rows);
+			return;
 		}
 	})
 }
@@ -121,12 +133,12 @@ module.exports.getNews = (req,res) => {
 // Retorna todos os funcionários envolvidos no desenvolvimento de dada notícia.
 // tbm não inclui agentes de estúdio, mas da pra colocar
 module.exports.getEmployeesByNews = (req,res) => {
-	pool.query(`SELECT REDATOR FROM NOTICIA N WHERE N.TITULO LIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
-				UNION SELECT PRODUTOR FROM NOTICIA N WHERE N.TITULO LIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
+	pool.query(`SELECT REDATOR FROM NOTICIA N WHERE N.TITULO ILIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
+				UNION SELECT PRODUTOR FROM NOTICIA N WHERE N.TITULO ILIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
 				UNION SELECT A.MEMBROEQUIPEESCUTA
 						FROM NOTICIA N JOIN ACONTECIMENTO A
 						ON N.NOMEACONT = A.NOME AND N.DATAACONT = A.DATA
-					  WHERE N.TITULO LIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
+					  WHERE N.TITULO ILIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
 				UNION SELECT F2.EDITOR
 					    FROM NOTICIA N JOIN ACONTECIMENTO A
 						ON N.NOMEACONT = A.NOME AND N.DATAACONT = A.DATA
@@ -134,7 +146,7 @@ module.exports.getEmployeesByNews = (req,res) => {
 							ON N.TITULO = F.TITULONOTICIA AND N.DATA = F.DATANOTICIA
 								JOIN FILMAGEMEDITADA F2
 								ON F.ID = F2.FILMBRUTA
-					  WHERE N.TITULO LIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
+					  WHERE N.TITULO ILIKE '%AMOR%' AND N.DATA = TO_DATE('2019/06/05', 'YYYY/MM/DD')
 				UNION SELECT E.AGENTECAMPO
 					    FROM NOTICIA N JOIN ACONTECIMENTO A
 						ON N.NOMEACONT = A.NOME AND N.DATAACONT = A.DATA
