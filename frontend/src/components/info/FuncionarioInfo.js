@@ -15,6 +15,10 @@ export class FuncionarioInfo extends Component {
                         <span>{this.props.funcionario.cpf}</span>
                     </p>
                     <p>
+                        <span style={{fontWeight: 'bold'}}>Telefone: </span>
+                        <span>{this.props.funcionario.telefone}</span>
+                    </p>
+                    <p>
                         <span style={{fontWeight: 'bold'}}>Cargo: </span>
                         <span>{this.props.funcionario.cargo}</span>
                     </p>

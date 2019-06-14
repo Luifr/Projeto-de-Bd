@@ -4,7 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 
 export class FuncionarioItem extends Component {
     render() {
-        const { cpf, nome, cargo } = this.props.funcionario;        return (
+        const { cpf, nome, cargo } = this.props.funcionario;        
+        return (
             <div style={{ fontSize: 'medium', margin: '2px 0px', display: 'flex'}} key={cpf}>
                 <Link to="/funcionarios/info" 
                     style={{  

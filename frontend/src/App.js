@@ -9,6 +9,8 @@ import Noticias from './components/pages/Noticias';
 import NoticiasList from './components/NoticiasList';
 import NoticiaInfo from './components/info/NoticiaInfo';
 import Inserir from './components/pages/Inserir';
+import InserirFuncionario from './components/pages/InserirFuncionario';
+import InserirNoticia from './components/pages/InserirNoticia';
 import uuid from 'uuid';
 import axios from 'axios'
 
@@ -197,14 +199,6 @@ class App extends React.Component {
     })
   }
 
-  criarRoute = () => {
-    return this.state.funcionarios.map((funcionario) => (
-      <Route path={"/funcionarios/" + funcionario.cpf} render={props => (
-        <FuncionarioInfo funcionario={funcionario}/>
-      )}/>
-    ));
-  }
-
   selecionarFunc = (cpf) => {
     this.setState({ todos: this.state.funcionarios.map((funcionario) => {
       if(funcionario.cpf === cpf) {
@@ -222,6 +216,37 @@ class App extends React.Component {
       return noticia;
     }) });
   }
+
+  inserirFuncionario = (funcionario) => {
+    axios.post(this.serverAddress + 'employees/', 
+      {
+        cpf: funcionario.cpf,
+        nome: funcionario.nome,
+        telefone: funcionario.telefone,
+        cargo: funcionario.cargo,
+        salario: funcionario.salario
+      }).then( (response) => {
+      console.log(response);
+    })
+  }
+
+  inserirNoticia = (noticia) => {
+    axios.post(this.serverAddress + 'news/', 
+      {
+        titulo: noticia.titulo,
+        data: noticia.data,
+        categoria: noticia.categoria,
+        descricao: noticia.descricao,
+        nomeAcont: noticia.nomeAcont,
+        dataAcont: noticia.dataAcont,
+        redator: noticia.redator,
+        produtor: noticia.produtor
+      }).then( (response) => {
+      console.log(response);
+    })
+  }
+
+  
 
   render(){
      return (
@@ -255,8 +280,16 @@ class App extends React.Component {
               </React.Fragment>
             )}/>
 
-            <Route exact path="/inserir" render={props => (
+            <Route path="/inserir" render={props => (
               <Inserir/>
+            )}/>
+
+            <Route path="/inserir/funcionario" render={props => (
+              <InserirFuncionario onSubmit={this.inserirFuncionario}/>
+            )}/>
+
+            <Route path="/inserir/noticia" render={props => (
+              <InserirNoticia onSubmit={this.inserirNoticia}/>
             )}/>
 
           </div>
