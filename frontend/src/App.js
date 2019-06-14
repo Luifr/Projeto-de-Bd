@@ -7,6 +7,7 @@ import FuncionariosList from './components/FuncionariosList';
 import FuncionarioInfo from './components/info/FuncionarioInfo';
 import Noticias from './components/pages/Noticias';
 import NoticiasList from './components/NoticiasList';
+import NoticiaInfo from './components/info/NoticiaInfo';
 import uuid from 'uuid';
 import axios from 'axios'
 
@@ -33,6 +34,7 @@ class App extends React.Component {
       }
     ],
     funcionarioSelecionado: '',
+    noticiaSelecionada: '',
     funcionarios: [
       {
         cpf: 12345,
@@ -137,8 +139,26 @@ class App extends React.Component {
   }
 
   buscarFuncionario = (busca, atributo) => {
-    console.log(busca, atributo);
-
+    let params;
+    if (atributo === 'name'){
+      params = {
+        name: busca
+      }
+    }
+    if (atributo === 'cpf'){
+      params = {
+        cpf: busca
+      }
+    }
+    if (atributo === 'position'){
+      params = {
+        position: busca
+      }
+    }
+    axios.get(this.serverAddress + 'employees/', params)
+      .then( (response) => {
+      this.setState({funcionarios: response.data});
+    })
   }
 
   mostrarTodosFunc = () => {
@@ -148,14 +168,31 @@ class App extends React.Component {
   }
 
   buscarNoticia = (busca, atributo) => {
-    axios.get(this.serverAddress + 'news/' + atributo + '/' + busca).then( (response) => {
-      this.setState({noticias: response});
+    let params;
+    if (atributo === 'name'){
+      params = {
+        name: busca
+      }
+    }
+    if (atributo === 'data'){
+      params = {
+        data: busca
+      }
+    }
+    if (atributo === 'category'){
+      params = {
+        category: busca
+      }
+    }
+    axios.get(this.serverAddress + 'employees/', params)
+      .then( (response) => {
+      this.setState({funcionarios: response.data});
     })
   }
 
   mostrarTodasNot = () => {
     axios.get(this.serverAddress + 'news/').then( (response) => {
-      this.setState({noticias: response});
+      this.setState({noticias: response.data});
     })
   }
 
@@ -176,6 +213,15 @@ class App extends React.Component {
     }) });
   }
 
+  selecionarNot = (titulo, data) => {
+    this.setState({ todos: this.state.noticias.map((noticia) => {
+      if(noticia.titulo === titulo && noticia.data === data) {
+        this.state.noticiaSelecionada = noticia;
+      }
+      return noticia;
+    }) });
+  }
+
   render(){
      return (
       <Router>
@@ -192,13 +238,19 @@ class App extends React.Component {
             <Route exact path="/noticias" render={props => (
               <React.Fragment>
                 <Noticias buscarNoticia={this.buscarNoticia} mostrarTodos={this.mostrarTodasNot}/>
-                <NoticiasList noticias={this.state.noticias}/>
+                <NoticiasList noticias={this.state.noticias} onClick={this.selecionarNot}/>
               </React.Fragment>
             )}/>
 
             <Route exact path="/funcionarios/info" render={props => (
               <React.Fragment>
                 <FuncionarioInfo funcionario={this.state.funcionarioSelecionado}/>
+              </React.Fragment>
+            )}/>
+
+            <Route exact path="/noticias/info" render={props => (
+              <React.Fragment>
+                <NoticiaInfo noticia={this.state.noticiaSelecionada}/>
               </React.Fragment>
             )}/>
 

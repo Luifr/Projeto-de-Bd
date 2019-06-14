@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 class NoticiasList extends React.Component {
     render(){
         return this.props.noticias.map((noticia) => (
-            <NoticiaItem key={noticia.titulo + noticia.data} noticia={noticia}/>
+            <NoticiaItem 
+                key={noticia.titulo + noticia.data} 
+                noticia={noticia}
+                onClick={this.props.onClick}/>
         )); 
     }
 }
