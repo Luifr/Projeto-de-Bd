@@ -11,6 +11,9 @@ import uuid from 'uuid';
 import axios from 'axios'
 
 class App extends React.Component {
+
+  serverAddress = 'http://localhost:8000/';
+
   state = {
     todos: [
       {
@@ -139,19 +142,19 @@ class App extends React.Component {
   }
 
   mostrarTodosFunc = () => {
-    axios.get('http://localhost:8000/employees/').then( (response) => {
+    axios.get(this.serverAddress + 'employees/').then( (response) => {
       this.setState({funcionarios: response.data});
     })
   }
 
   buscarNoticia = (busca, atributo) => {
-    axios.get('localhost:3000/news/' + atributo + '/' + busca).then(function (response) {
+    axios.get(this.serverAddress + 'news/' + atributo + '/' + busca).then( (response) => {
       this.setState({noticias: response});
     })
   }
 
   mostrarTodasNot = () => {
-    axios.get('localhost:3000/news/').then(function (response) {
+    axios.get(this.serverAddress + 'news/').then( (response) => {
       this.setState({noticias: response});
     })
   }
