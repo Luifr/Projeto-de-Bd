@@ -8,6 +8,9 @@ import FuncionarioInfo from './components/info/FuncionarioInfo';
 import Noticias from './components/pages/Noticias';
 import NoticiasList from './components/NoticiasList';
 import NoticiaInfo from './components/info/NoticiaInfo';
+import Inserir from './components/pages/Inserir';
+import InserirFuncionario from './components/pages/InserirFuncionario';
+import InserirNoticia from './components/pages/InserirNoticia';
 import uuid from 'uuid';
 import axios from 'axios'
 
@@ -184,7 +187,7 @@ class App extends React.Component {
         category: busca
       }
     }
-    axios.get(this.serverAddress + 'employees/', params)
+    axios.get(this.serverAddress + 'news/', params)
       .then( (response) => {
       this.setState({funcionarios: response.data});
     })
@@ -194,14 +197,6 @@ class App extends React.Component {
     axios.get(this.serverAddress + 'news/').then( (response) => {
       this.setState({noticias: response.data});
     })
-  }
-
-  criarRoute = () => {
-    return this.state.funcionarios.map((funcionario) => (
-      <Route path={"/funcionarios/" + funcionario.cpf} render={props => (
-        <FuncionarioInfo funcionario={funcionario}/>
-      )}/>
-    ));
   }
 
   selecionarFunc = (cpf) => {
@@ -221,6 +216,37 @@ class App extends React.Component {
       return noticia;
     }) });
   }
+
+  inserirFuncionario = (funcionario) => {
+    axios.post(this.serverAddress + 'employees/', 
+      {
+        cpf: funcionario.cpf,
+        nome: funcionario.nome,
+        telefone: funcionario.telefone,
+        cargo: funcionario.cargo,
+        salario: funcionario.salario
+      }).then( (response) => {
+      console.log(response);
+    })
+  }
+
+  inserirNoticia = (noticia) => {
+    axios.post(this.serverAddress + 'news/', 
+      {
+        titulo: noticia.titulo,
+        data: noticia.data,
+        categoria: noticia.categoria,
+        descricao: noticia.descricao,
+        nomeAcont: noticia.nomeAcont,
+        dataAcont: noticia.dataAcont,
+        redator: noticia.redator,
+        produtor: noticia.produtor
+      }).then( (response) => {
+      console.log(response);
+    })
+  }
+
+  
 
   render(){
      return (
@@ -252,6 +278,18 @@ class App extends React.Component {
               <React.Fragment>
                 <NoticiaInfo noticia={this.state.noticiaSelecionada}/>
               </React.Fragment>
+            )}/>
+
+            <Route path="/inserir" render={props => (
+              <Inserir/>
+            )}/>
+
+            <Route path="/inserir/funcionario" render={props => (
+              <InserirFuncionario onSubmit={this.inserirFuncionario}/>
+            )}/>
+
+            <Route path="/inserir/noticia" render={props => (
+              <InserirNoticia onSubmit={this.inserirNoticia}/>
             )}/>
 
           </div>

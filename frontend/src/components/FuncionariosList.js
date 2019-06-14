@@ -5,9 +5,10 @@ import FuncionarioItem from './FuncionarioItem';
 class FuncionariosList extends React.Component {
     render(){
         return this.props.funcionarios.map((funcionario) => (
-            <React.Fragment key={funcionario.cpf}>
-                <FuncionarioItem funcionario={funcionario} onClick={this.props.onClick}/>
-            </React.Fragment>
+            <FuncionarioItem 
+                key={funcionario.cpf} 
+                funcionario={funcionario} 
+                onClick={this.props.onClick}/>
         )); 
     }
 }

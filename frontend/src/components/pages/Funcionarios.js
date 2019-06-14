@@ -1,4 +1,5 @@
 import React from 'react';
+import Popup from 'reactjs-popup';
 
 export default class Funcionarios extends React.Component{
     state = {
@@ -48,8 +49,9 @@ export default class Funcionarios extends React.Component{
                         className="btn"
                         style={{flex: '1', margin: '0px 1px'}}
                         onClick={this.props.mostrarTodos}
-                    />
+                    />              
                 </form>
+
             </div>
             <div style={{ fontSize: 'small', margin: '2px 0px', display: 'flex'}}>
                 <span style={{ color: '#333', padding: '0px 8px', margin: '0px 1px', textAlign: 'center', background: '#c0c0c0', flex: '1'}}>CPF</span>
