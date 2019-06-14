@@ -8,6 +8,7 @@ import FuncionarioInfo from './components/info/FuncionarioInfo';
 import Noticias from './components/pages/Noticias';
 import NoticiasList from './components/NoticiasList';
 import NoticiaInfo from './components/info/NoticiaInfo';
+import Inserir from './components/pages/Inserir';
 import uuid from 'uuid';
 import axios from 'axios'
 
@@ -184,7 +185,7 @@ class App extends React.Component {
         category: busca
       }
     }
-    axios.get(this.serverAddress + 'employees/', params)
+    axios.get(this.serverAddress + 'news/', params)
       .then( (response) => {
       this.setState({funcionarios: response.data});
     })
@@ -252,6 +253,10 @@ class App extends React.Component {
               <React.Fragment>
                 <NoticiaInfo noticia={this.state.noticiaSelecionada}/>
               </React.Fragment>
+            )}/>
+
+            <Route exact path="/inserir" render={props => (
+              <Inserir/>
             )}/>
 
           </div>
