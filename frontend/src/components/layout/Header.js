@@ -7,7 +7,7 @@ function Header() {
             <h1>Banco de Dados Produtora</h1>
             <Link style={linkStyle} to="/funcionarios"> Funcionários</Link> | 
             <Link style={linkStyle} to="/noticias"> Notícias</Link> |
-            <Link style={linkStyle} to="/episodio"> Episodios</Link>
+            <Link style={linkStyle} to="/episodios"> Episodios</Link>
         </header>
     )
 }

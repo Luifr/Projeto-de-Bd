@@ -7,8 +7,10 @@ import FuncionariosList from './components/FuncionariosList';
 import FuncionarioInfo from './components/info/FuncionarioInfo';
 import Noticias from './components/pages/Noticias';
 import NoticiasList from './components/NoticiasList';
+import Episodios from './components/pages/Episodios';
 import uuid from 'uuid';
 import axios from 'axios'
+import FichaEpisodio from './components/FichaEpisodio';
 
 class App extends React.Component {
 
@@ -111,29 +113,57 @@ class App extends React.Component {
         redator: 'Karen Martins',
         produtor: 'Maria Nascimento'
       }
-    ]
-  }
+    ],
+    episodio: [
+      {
+        data: '10/05/2017',
+        duracao: 20,
+        ibope: 10.1,
+        noticiasExibidas: [
+          {
+            titulo: 'Roubo na casa da Ana',
+            categoria: 'Crime',
+            descricao: 'Ana FOI ROUBADA',
+            horaExibicao: '20:21', 
+            numeroBloco: 1,
+            codigoDaFilmagem: '6/2'
+          }
+        ]
+      },
+      {
+        data: '12/12/2012',
+        duracao: 21,
+        ibope: 13.1,
+        noticiasExibidas: [
+          {
+            titulo: 'Roubo na casa do Lui',
+            categoria: 'Crime Chato',
+            descricao: 'Lui FOI ROUBADO',
+            horaExibicao: '19:50', 
+            numeroBloco: 3,
+            codigoDaFilmagem: '23/6'
+          },
+          {
+          titulo: 'Roubo na casa do Mariana',
+          categoria: 'Crime Muuuito Chato',
+          descricao: 'Mariana FOI ROUBADO',
+          horaExibicao: '23:45', 
+          numeroBloco: 2,
+          codigoDaFilmagem: '22/2'
+          },
+          {
+          titulo: 'Leite e vida',
+          categoria: 'Comida',
+          descricao: 'leite é bom',
+          horaExibicao: '12:50', 
+          numeroBloco: 4,
+          codigoDaFilmagem: '22/1'
+          }
+        ]
+      },
 
-  markComplete = (id) => {
-    this.setState({ todos: this.state.todos.map((todo) => {
-      if(todo.id === id) {
-        todo.completed = !todo.completed;
-      }
-      return todo;
-    }) });
-  }
-
-  delTodo = (id) => {
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)]});
-  }
-
-  addTodo = (title) => {
-    const newTodo = {
-      id: uuid.v4(),
-      title: title,
-      completed: false
-    }
-    this.setState({ todos: [...this.state.todos, newTodo]})
+    ],
+    episodioSelecionado: undefined
   }
 
   buscarFuncionario = (busca, atributo) => {
@@ -152,6 +182,28 @@ class App extends React.Component {
       this.setState({noticias: response});
     })
   }
+
+  //ANA ---- IMPLEMENTAR --------------------------------
+  buscarEpisodio = (busca) => {
+    this.setState({episodioSelecionado:undefined});
+    this.state.episodio.map( episodio => {
+      if(episodio.data === busca){
+        this.setState({episodioSelecionado:episodio});
+      }
+      return episodio;
+    } );   
+  }
+
+  mostrarTodosEps = () => {
+    console.log('mostrando noticias');
+    
+  }
+
+  selecionarEps = (data) =>{
+    console.log(data);
+  }
+
+  //FIM ANA -------------------------------------------
 
   mostrarTodasNot = () => {
     axios.get(this.serverAddress + 'news/').then( (response) => {
@@ -186,6 +238,13 @@ class App extends React.Component {
               <React.Fragment>
                 <Funcionarios buscarFuncionario={this.buscarFuncionario} mostrarTodos={this.mostrarTodosFunc}/>
                 <FuncionariosList funcionarios={this.state.funcionarios} onClick={this.selecionarFunc}/>
+              </React.Fragment>
+            )}/>
+
+            <Route exact path="/episodios" render={props => (
+              <React.Fragment>
+                <Episodios buscarEpisodio={this.buscarEpisodio} mostrarTodos={this.mostrarTodosEps}/>
+                <FichaEpisodio episodio={this.state.episodioSelecionado}/>
               </React.Fragment>
             )}/>
 
