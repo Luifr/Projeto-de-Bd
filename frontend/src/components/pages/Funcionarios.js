@@ -13,7 +13,7 @@ export default class Funcionarios extends React.Component{
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.buscarFuncionario(this.state.busca, this.state.atributo);
+        this.props.buscarEpisodio(this.state.busca, this.state.data);
     }
 
     render(){
