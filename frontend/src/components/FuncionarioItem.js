@@ -4,15 +4,15 @@ import { Link, Redirect } from 'react-router-dom';
 
 export class FuncionarioItem extends Component {
     render() {
-        const { cpf, nome, cargo } = this.props.funcionario;        
+        const { cpf, nome, cargo } = this.props.funcionario;
         return (
-            <div style={{ fontSize: 'medium', margin: '2px 0px', display: 'flex'}} key={cpf}>
-                <Link to="/funcionarios/info" 
-                    style={{  
-                        padding: '0px 8px', 
-                        margin: '0px 1px', 
-                        textAlign: 'center', 
-                        flex: '1', 
+            <div style={{ fontSize: 'medium', margin: '2px 0px', display: 'flex', borderLeft: '6px solid red', background: '#eeecea'}} key={cpf}>
+                <Link to="/funcionarios/info"
+                    style={{
+                        padding: '0px 8px',
+                        margin: '0px 1px',
+                        textAlign: 'center',
+                        flex: '1',
                         textDecoration: 'underline'
                     }}
                     onClick={this.props.onClick.bind(this, cpf)}>{cpf}</Link>

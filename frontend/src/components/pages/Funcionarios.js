@@ -13,7 +13,7 @@ export default class Funcionarios extends React.Component{
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.buscarEpisodio(this.state.busca, this.state.data);
+        this.props.buscarFuncionario(this.state.busca, this.state.atributo);
     }
 
     render(){
@@ -49,7 +49,7 @@ export default class Funcionarios extends React.Component{
                         className="btn"
                         style={{flex: '1', margin: '0px 1px'}}
                         onClick={this.props.mostrarTodos}
-                    />              
+                    />
                 </form>
 
             </div>

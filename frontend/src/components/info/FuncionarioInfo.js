@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import NoticiasDoFunc from './NoticiasDoFunc'
 
 export class FuncionarioInfo extends Component {
     render() {
+        console.log(this.props.funcionario.noticias);
         return (
             <div>
                 <h3 style={{padding: '6px', textAlign: 'center', background: '#eee'}}>Ficha do funcionário</h3>
@@ -25,10 +27,6 @@ export class FuncionarioInfo extends Component {
                     <p>
                         <span style={{fontWeight: 'bold'}}>Salário: </span>R$
                         <span>{this.props.funcionario.salario}</span>,00
-                    </p>
-                    <p>
-                        <span style={{fontWeight: 'bold'}}>Notícias em que trabalhou: </span>
-                        <span>{}</span>
                     </p>
                 </div>
             </div>

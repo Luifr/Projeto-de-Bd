@@ -31,13 +31,39 @@ module.exports.getEmployees = (req,res) => {
 		queryText = `SELECT * FROM FUNCIONARIO;`;
 	}
 	else if(params.name){
-		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE NOME ILIKE '%${params.name}%' ORDER BY NOME;`;
+		queryText = `SELECT * FROM FUNCIONARIO WHERE NOME ILIKE '%${params.name}%' ORDER BY NOME;`;
 	}
 	else if(params.cpf){
-		queryText = `SELECT F.CPF, F.NOME, F.CARGO FROM FUNCIONARIO F LEFT JOIN AGENTE A ON F.CPF = A.CPF WHERE F.CPF='${params.cpf}';`;
+		queryText = `SELECT F.CPF, F.NOME, F.CARGO, F.TELEFONE, F.SALARIO FROM FUNCIONARIO F LEFT JOIN AGENTE A ON F.CPF = A.CPF WHERE F.CPF='${params.cpf}';`;
 	}
 	else if(params.position){
-		queryText = `SELECT CPF, NOME, CARGO FROM FUNCIONARIO WHERE CARGO ILIKE '%${params.position}%' ORDER BY CARGO;`;
+		queryText = `SELECT * FROM FUNCIONARIO WHERE CARGO ILIKE '%${params.position}%' ORDER BY CARGO;`;
+	}
+	else if (params.titulo, params.data){
+		queryText = `SELECT REDATOR AS FUNCIONARIO FROM NOTICIA N WHERE N.TITULO ILIKE '%${params.titulo}%' AND N.DATA = TO_DATE('${params.data}', 'YYYY/MM/DD')
+		UNION SELECT PRODUTOR FROM NOTICIA N WHERE N.TITULO ILIKE '%${params.titulo}%' AND N.DATA = TO_DATE('${params.data}', 'YYYY/MM/DD')
+		UNION SELECT A.MEMBROEQUIPEESCUTA
+				FROM NOTICIA N JOIN ACONTECIMENTO A
+				ON N.NOMEACONT = A.NOME AND N.DATAACONT = A.DATA
+			  WHERE N.TITULO ILIKE '%${params.titulo}%' AND N.DATA = TO_DATE('${params.data}', 'YYYY/MM/DD')
+		UNION SELECT F2.EDITOR
+				FROM NOTICIA N JOIN ACONTECIMENTO A
+				ON N.NOMEACONT = A.NOME AND N.DATAACONT = A.DATA
+					JOIN FILMAGEMBRUTA F
+					ON N.TITULO = F.TITULONOTICIA AND N.DATA = F.DATANOTICIA
+						JOIN FILMAGEMEDITADA F2
+						ON F.ID = F2.FILMBRUTA
+			  WHERE N.TITULO ILIKE '%${params.titulo}%' AND N.DATA = TO_DATE('${params.data}', 'YYYY/MM/DD')
+		UNION SELECT E.AGENTECAMPO
+				FROM NOTICIA N JOIN ACONTECIMENTO A
+				ON N.NOMEACONT = A.NOME AND N.DATAACONT = A.DATA
+					JOIN FILMAGEMBRUTA F
+					ON N.TITULO = F.TITULONOTICIA AND N.DATA = F.DATANOTICIA
+						JOIN FILMAGEMEDITADA F2
+						ON F.ID = F2.FILMBRUTA
+							JOIN EQUIPESDECAMPO E
+							ON F.ID = E.FILMBRUTA
+		WHERE N.TITULO = '${params.titulo}' AND N.DATA = TO_DATE('${params.data}', 'YYYY/MM/DD');`
 	}
 	else{
 		res.status(400).send({message: "Error"})
@@ -53,7 +79,7 @@ module.exports.getEmployees = (req,res) => {
 
 module.exports.insertEmployee = (req,res) => {
 	let params = req.body;
-	pool.query(`INSERT INTO FUNCIONARIO(CPF, NOME, TELEFONE, CARGO, SALARIO) VALUES ('${params.cpf}', '${params.name}', '${params.telephone}', '${params.position}', ${params.salary});`, (err,data)=>{
+	pool.query(`INSERT INTO FUNCIONARIO(CPF, NOME, TELEFONE, CARGO, SALARIO) VALUES ('${params.cpf}', UPPER('${params.name}'), '${params.telephone}', '${params.position}', ${params.salary});`, (err,data)=>{
 		if(!err){
 			if(params.type && params.extrasalary && params.position.toUpperCase() == "AGENTE"){
 				pool.query(`INSERT INTO AGENTE(CPF, TIPO, SALARIOEXTRA) VALUES ('${params.cpf}', '${params.type}', ${params.extrasalary});`, (err,data)=>{
@@ -195,8 +221,8 @@ module.exports.getEpisodes = (req,res) => {
 	if(Object.entries(params).length == 0){
 		queryText = `SELECT * FROM EPISODIO;`;
 	}
-	else if(params.data){
-		queryText = `SELECT * FROM EPISODIO WHERE DATA='${params.data}';`;
+	else if(params.date){
+		queryText = `SELECT * FROM EPISODIO WHERE DATA='${params.date}';`;
 	}
 
 	pool.query(queryText, (err,data)=>{
@@ -208,7 +234,8 @@ module.exports.getEpisodes = (req,res) => {
 
 // Retorna todas as notícias que foram ao ar em dado episódio.
 module.exports.getNewsByEpisode = (req,res) => {
-	pool.query(`SELECT P.EPISODIO, P.NROBLOCO, P.HORA, F.FILMBRUTA, P.NROEDIC, N.TITULO, N.DESCRICAO, N.CATEGORIA, N.DATA
+	let params = req.query;
+	pool.query(`SELECT E.DATA, E.DURACAO, P.NROBLOCO, P.HORA, F.FILMBRUTA, P.NROEDIC, N.TITULO, N.DESCRICAO, N.CATEGORIA, N.DATA
     				FROM EPISODIO E JOIN PERTENCE P
     				ON E.DATA = P.EPISODIO
         				JOIN FILMAGEMEDITADA F
@@ -217,8 +244,9 @@ module.exports.getNewsByEpisode = (req,res) => {
             				ON F.FILMBRUTA = F2.ID
                 				JOIN NOTICIA N
                 				ON F2.TITULONOTICIA = N.TITULO AND F2.DATANOTICIA = N.DATA
-    			WHERE E.DATA = '${params.data}'
+    			WHERE E.DATA = '${params.date}'
 				ORDER BY P.HORA;`, (err,data)=>{
+					console.log(data.rows);
 		if(!err){
 			res.send(data.rows);
 		}
@@ -255,7 +283,7 @@ module.exports.getAdsByCPNJ = (req,res) => {
 
 module.exports.insertNews = (req,res) => {
 	let params = req.body;
-	pool.query(`INSERT INTO NOTICIA(TITULO, DATA, CATEGORIA, DESCRICAO, NOMEACONT, DATAACONT, REDATOR, PRODUTOR) VALUES ('${params.title}', TO_DATE('${params.date}', 'DD/MM/YYYY'), '${params.category}', '${params.description}', '${params.name_ocurrence}', TO_DATE('${params.date_ocurrence}', 'DD/MM/YYYY'), '${params.redator}','${params.editor}');`, (err,data)=>{
+	pool.query(`INSERT INTO NOTICIA(TITULO, DATA, CATEGORIA, DESCRICAO, NOMEACONT, DATAACONT, REDATOR, PRODUTOR) VALUES (UPPER('${params.title}'), TO_DATE('${params.date}', 'DD/MM/YYYY'), '${params.category}', '${params.description}', '${params.name_ocurrence}', TO_DATE('${params.date_ocurrence}', 'DD/MM/YYYY'), '${params.redator}','${params.editor}');`, (err,data)=>{
 	 if(!err){
 	  res.send(data.rows);
 	 } else res.send(err.constraint);

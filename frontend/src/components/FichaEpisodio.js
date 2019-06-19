@@ -3,16 +3,15 @@ import NoticiasDoEpisodio from './NoticiasDoEpisodio';
 import './FichaEpisodio.css';
 
 export class FichaEpisodio extends Component {
-    render() {    
-        if(this.props.episodio == undefined) {  
+    render() {
+        if(this.props.episodio == undefined) {
             return (
                 <div>
-                    <p style= {EpisodeNotFound}>Não tem episódio nesta data :( </p>
                 </div>
             )
         }
         else{
-            
+
             return (
                 <div>
                     <div className='main'>
@@ -27,16 +26,16 @@ export class FichaEpisodio extends Component {
                     <hr/>
                     <p className='noticias'><b>Notícias Exibidas</b></p>
                     <br/>
-                    
+
                     <div className='flex-container'>
-                        {this.props.episodio.noticiasExibidas.map( 
-                            (noticia) =>  <NoticiasDoEpisodio noticia={noticia}/>
-                        )}      
+                        {this.props.episodio.noticiasExibidas.map(
+                            (noticia) =>  <NoticiasDoEpisodio noticia={noticia} onClick={this.props.onClick}/>
+                        )}
                     </div>
-                                   
+
 
                 </div>
-            )     
+            )
         }
     }
 }
@@ -44,8 +43,8 @@ export class FichaEpisodio extends Component {
 const EpisodeNotFound = {
     color: '#ff0000',
     textAlign: 'center',
-    padding: '0px 8px', 
-    fontSize: 'small', 
+    padding: '0px 8px',
+    fontSize: 'small',
     margin: '2px 0px'
 }
 

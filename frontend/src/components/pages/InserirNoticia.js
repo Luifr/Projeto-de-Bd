@@ -42,14 +42,14 @@ export class InserirNoticia extends Component {
                         onChange={this.onChange}
                     />
                     <input
-                        type="number"
+                        type="text"
                         name="redator"
                         style={{ padding: '5px', margin:'' }}
                         placeholder="Redator (CPF)"
                         onChange={this.onChange}
                     />
                     <input
-                        type="number"
+                        type="text"
                         name="produtor"
                         style={{ padding: '5px', margin:'' }}
                         placeholder="Produtor (CPF)"

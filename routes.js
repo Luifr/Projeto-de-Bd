@@ -9,8 +9,6 @@ router.get('/employees', apiController.getEmployees);
 
 router.post('/employees', apiController.insertEmployee);
 
-router.get('/employees/news', apiController.insertEmployee);
-
 router.post('/employees/agent', apiController.insertAgent);
 
 ///////////////////////////////////////////////////////////
@@ -24,7 +22,12 @@ router.post('/news', apiController.insertNews);
 
 ///////////////////////////////////////////////////////////
 
-router.get('/episodes', apiController.getEpisodes);
+router.get('/episodes', apiController.getNewsByEpisode);
+
+router.get('/episodio/ibope', apiController.getIbopeByEpisode);
+
+router.get('/episodio/news', apiController.getNewsByEpisode);
+
 
 // getNewsByEpisode
 // getIbopeByEpisode
